@@ -208,6 +208,73 @@ async def test_options_convert_the_lengths_to_a_new_unit(hass: HomeAssistant) ->
     assert entry.options["diameter"] == 9
 
 
+async def test_flow_keeps_each_lengths_own_unit(hass: HomeAssistant) -> None:
+    _distance(hass, 3)
+    result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": config_entries.SOURCE_USER})
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"], {"source": SOURCE, "measure": "distance", "unit": "ft"}
+    )
+    # As the manufacturer gives it: feet, except the rings, in inches.
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"],
+        {
+            "shape": "round",
+            "diameter": 9,
+            "diameter_unit": "ft",
+            "rings": 7,
+            "ring_height": 32,
+            "ring_height_unit": "in",
+            "top": "cone",
+            "top_height": 2,
+            "top_height_unit": "ft",
+            "bottom": "cone",
+            "bottom_height": 7,
+            "bottom_height_unit": "ft",
+            "outlet": 0,
+            "outlet_unit": "ft",
+        },
+    )
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"],
+        {
+            "grain": "none",
+            "capacity": 24,
+            "density_unit": "kg/m3",
+            "weight_unit": "ton",
+            "volume_unit": "bu",
+            "include_roof": False,
+        },
+    )
+    options = result["options"]
+    assert options["ring_height_unit"] == "in"
+    assert "diameter_unit" not in options
+    assert "outlet_unit" not in options
+    await hass.async_block_till_done()
+
+    # The same bin as entered all in inches, so the same weight.
+    entry = hass.config_entries.async_entries(DOMAIN)[0]
+    _distance(hass, HEIGHT - (84 + 4.5 * 32) * INCH)
+    await hass.async_block_till_done()
+    assert float(_state(hass, entry, "weight").state) == pytest.approx(16.4, abs=0.05)
+    assert _state(hass, entry, "fill").attributes["silo"]["ring_height_unit"] == "in"
+
+
+async def test_options_leave_lengths_with_their_own_unit(hass: HomeAssistant) -> None:
+    _distance(hass, 3)
+    entry = await _setup(
+        hass, {**BIN, "unit": "ft", "diameter": 9, "ring_height_unit": "in", "top_height": 2, "bottom_height": 7}
+    )
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], {"source": SOURCE, "measure": "distance", "unit": "m"}
+    )
+    defaults = {str(key): key.default() for key in result["data_schema"].schema if callable(key.default)}
+    assert defaults["diameter"] == 2.743  # followed the default unit: converted
+    assert defaults["ring_height"] == 32  # in inches of its own: unchanged
+    assert defaults["ring_height_unit"] == "in"
+    assert defaults["diameter_unit"] == "m"
+
+
 # ---------- sensors ----------
 
 

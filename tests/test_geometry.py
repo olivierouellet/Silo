@@ -68,6 +68,17 @@ def test_volumes_match_the_textbook() -> None:
     assert part_volume(hopper, "round") == pytest.approx(math.pi * (1 + 0.25 + 0.0625))
 
 
+def test_cone_roof_cut_at_its_lid() -> None:
+    roof = build_parts(**{**BASE, "top": "cone", "top_height": 3, "top_opening": 0.5})[1]
+    assert roof.w1 == 0.5
+    assert part_volume(roof, "round") == pytest.approx(math.pi * (1 + 0.25 + 0.0625))
+    assert build_parts(**{**BASE, "top": "dome", "top_height": 3, "top_opening": 0.5})[1].w1 == 0
+    lid = silo_from_options({**BIN, "include_roof": True, "top_opening": 18})
+    in_feet = silo_from_options({**BIN, "include_roof": True, "top_opening": 1.5, "top_opening_unit": "ft"})
+    assert lid.capacity > silo_from_options({**BIN, "include_roof": True}).capacity
+    assert in_feet.capacity == pytest.approx(lid.capacity)
+
+
 def test_pointed_hopper_fills_as_the_cube_of_the_height() -> None:
     parts = build_parts(**{**BASE, "bottom": "cone", "bottom_height": 2})
     hopper = part_volume(parts[0], "round")
@@ -131,6 +142,28 @@ def test_capacity_of_one_ring_works_out_the_hopper() -> None:
     assert full.weight / TON == pytest.approx(21 + 3 * hopper)
     assert full.percent == pytest.approx(100)
     assert read_silo(silo, 84 * INCH, "level").weight / TON == pytest.approx(3 * hopper)
+
+
+def test_lengths_in_their_own_units() -> None:
+    """The manufacturer's sheet (9 ft, 32 in rings, 7 ft hopper, 2 ft roof) is the same bin as all in inches."""
+    mixed = silo_from_options(
+        {
+            **BIN,
+            "unit": "ft",
+            "diameter": 9,
+            "ring_height": 32,
+            "ring_height_unit": "in",
+            "top_height": 2,
+            "bottom_height": 7,
+        }
+    )
+    inches = silo_from_options(BIN)
+    assert mixed.height == pytest.approx(inches.height)
+    assert mixed.capacity == pytest.approx(inches.capacity)
+    assert mixed.density == pytest.approx(inches.density)
+    metric = silo_from_options({"unit": "mm", "diameter": 2000, "ring_height": 3000, "top": "flat"})
+    assert metric.capacity == pytest.approx(CYLINDER)
+    assert convert_length(2.743, "m", "mm") == 2743
 
 
 def test_units() -> None:
