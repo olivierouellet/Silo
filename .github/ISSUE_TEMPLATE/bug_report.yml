@@ -1,0 +1,59 @@
+name: Bug report · Bogue
+description: Something doesn't work as expected. · Quelque chose ne fonctionne pas comme prévu.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Write in English or French. · Écrivez en anglais ou en français.
+
+        If the bug has a security side, close this and follow
+        [SECURITY.md](https://github.com/olivierouellet/Silo/blob/main/SECURITY.md) instead.
+        · Si le problème touche la sécurité, fermez ce formulaire et suivez plutôt SECURITY.md.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened · Ce qui s’est passé
+      description: What you did, what you saw, and what you expected. · Ce que vous avez fait, ce que vous avez vu, et ce que vous attendiez.
+    validations:
+      required: true
+
+  - type: textarea
+    id: silo
+    attributes:
+      label: The silo and its sensor · Le silo et son capteur
+      description: >
+        The silo's dimensions as entered, and the sensor's state and unit. ·
+        Les dimensions du silo telles qu’entrées, et l’état et l’unité du capteur.
+      placeholder: 9 ft wide, 7 rings of 32 in, 7 ft hopper, 2 ft roof; sensor.bin_distance = 3.42 m
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Versions
+      description: Silo and Home Assistant. · Silo et Home Assistant.
+      placeholder: Silo 0.1.0, Home Assistant 2026.10.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs · Journaux
+      description: >
+        Settings → System → Logs, filtered on "silo". ·
+        Paramètres → Système → Journaux, filtrés sur « silo ».
+      render: text
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting · Avant d’envoyer
+      options:
+        - label: This is not a security issue. · Ce n’est pas un problème de sécurité.
+          required: true
