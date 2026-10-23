@@ -5,7 +5,7 @@ People should start with [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## What this is
 
-A Home Assistant custom integration (`custom_components/silo`, a helper distributed through HACS) that turns a
+A Home Assistant custom integration (`custom_components/silo`, distributed through HACS) that turns a
 distance sensor at the top of a grain silo into its fill level, grain height, volume, weight and room left.
 The companion card is [Silo Card](https://github.com/olivierouellet/Silo-Card): it draws the silo from the
 fill sensor's `silo` attribute, so the silo is described only once, here.
