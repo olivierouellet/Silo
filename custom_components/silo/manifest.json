@@ -1,0 +1,13 @@
+{
+  "domain": "silo",
+  "name": "Silo",
+  "codeowners": ["@olivierouellet"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/olivierouellet/Silo",
+  "integration_type": "helper",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/olivierouellet/Silo/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

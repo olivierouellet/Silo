@@ -1,0 +1,231 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add a silo",
+        "description": "Choose the sensor that measures the grain: usually an ultrasonic sensor at the top of the silo, pointing down (see the ESPHome example in Silo Card). The next steps describe the silo's shape and what it holds.",
+        "data": {
+          "name": "Name",
+          "source": "Sensor",
+          "measure": "The sensor measures",
+          "unit": "Unit of the dimensions"
+        },
+        "data_description": {
+          "name": "Leave empty to use the sensor's device name.",
+          "source": "Any length unit works (mm, cm, m, in, ft).",
+          "unit": "Every length in the next step is in this unit."
+        }
+      },
+      "shape": {
+        "title": "Shape of the silo",
+        "description": "Lengths in {unit}. The silo's lowest point (the floor, or the tip of the hopper) is height 0.",
+        "data": {
+          "shape": "Cross-section",
+          "diameter": "Diameter (the side, for a square silo)",
+          "rings": "Rings",
+          "ring_height": "Ring height",
+          "top": "Roof",
+          "top_height": "Roof height",
+          "bottom": "Bottom",
+          "bottom_height": "Hopper height",
+          "outlet": "Hopper outlet diameter",
+          "sensor_height": "Sensor height"
+        },
+        "data_description": {
+          "rings": "The straight wall, from the eave down to the hopper or floor. A wall without rings is 1 ring as tall as the wall.",
+          "top_height": "Ignored for a flat roof.",
+          "bottom_height": "Ignored for a flat floor.",
+          "outlet": "0 when the hopper comes to a point.",
+          "sensor_height": "Above the silo's lowest point. Leave empty when the sensor is at the very top."
+        }
+      },
+      "contents": {
+        "title": "What the silo holds",
+        "description": "For the weight, choose a grain (its standard bushel weight), or enter your own density or the manufacturer's capacity. Leave them all empty for the volume only.",
+        "data": {
+          "grain": "Grain",
+          "density": "Bulk density",
+          "density_unit": "Density unit",
+          "capacity": "Capacity (weight when full)",
+          "capacity_per": "The capacity is for",
+          "weight_unit": "Weight unit",
+          "volume_unit": "Volume unit",
+          "include_roof": "Full means filled to the peak"
+        },
+        "data_description": {
+          "density": "Replaces the grain's standard bushel weight. Your own test weight is more accurate.",
+          "capacity": "Weight of the whole silo when full, or of one full ring, in the weight unit below, from the manufacturer. Replaces the density.",
+          "include_roof": "Otherwise full is at the eave, and grain in the roof shows above 100 %.",
+          "capacity_per": "For “One full ring”, the hopper and roof get the weight of their own volume: a cone holds a third of a ring as tall."
+        }
+      }
+    },
+    "error": {
+      "positive": "Enter a length greater than 0.",
+      "roof_height": "Enter the roof's height, or choose a flat roof.",
+      "hopper_height": "Enter the hopper's height, or choose a flat floor."
+    },
+    "abort": {
+      "already_configured": "This sensor already has a silo."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Silo options",
+        "description": "The sensors keep their IDs. Changing the unit converts the lengths already entered.",
+        "data": {
+          "source": "Sensor",
+          "measure": "The sensor measures",
+          "unit": "Unit of the dimensions"
+        },
+        "data_description": {
+          "source": "Any length unit works (mm, cm, m, in, ft).",
+          "unit": "Every length in the next step is in this unit."
+        }
+      },
+      "shape": {
+        "title": "Shape of the silo",
+        "description": "Lengths in {unit}. The silo's lowest point (the floor, or the tip of the hopper) is height 0.",
+        "data": {
+          "shape": "Cross-section",
+          "diameter": "Diameter (the side, for a square silo)",
+          "rings": "Rings",
+          "ring_height": "Ring height",
+          "top": "Roof",
+          "top_height": "Roof height",
+          "bottom": "Bottom",
+          "bottom_height": "Hopper height",
+          "outlet": "Hopper outlet diameter",
+          "sensor_height": "Sensor height"
+        },
+        "data_description": {
+          "rings": "The straight wall, from the eave down to the hopper or floor. A wall without rings is 1 ring as tall as the wall.",
+          "top_height": "Ignored for a flat roof.",
+          "bottom_height": "Ignored for a flat floor.",
+          "outlet": "0 when the hopper comes to a point.",
+          "sensor_height": "Above the silo's lowest point. Leave empty when the sensor is at the very top."
+        }
+      },
+      "contents": {
+        "title": "What the silo holds",
+        "description": "For the weight, choose a grain (its standard bushel weight), or enter your own density or the manufacturer's capacity. Leave them all empty for the volume only.",
+        "data": {
+          "grain": "Grain",
+          "density": "Bulk density",
+          "density_unit": "Density unit",
+          "capacity": "Capacity (weight when full)",
+          "capacity_per": "The capacity is for",
+          "weight_unit": "Weight unit",
+          "volume_unit": "Volume unit",
+          "include_roof": "Full means filled to the peak"
+        },
+        "data_description": {
+          "density": "Replaces the grain's standard bushel weight. Your own test weight is more accurate.",
+          "capacity": "Weight of the whole silo when full, or of one full ring, in the weight unit below, from the manufacturer. Replaces the density.",
+          "include_roof": "Otherwise full is at the eave, and grain in the roof shows above 100 %.",
+          "capacity_per": "For “One full ring”, the hopper and roof get the weight of their own volume: a cone holds a third of a ring as tall."
+        }
+      }
+    },
+    "error": {
+      "positive": "Enter a length greater than 0.",
+      "roof_height": "Enter the roof's height, or choose a flat roof.",
+      "hopper_height": "Enter the hopper's height, or choose a flat floor."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "fill": {
+        "name": "Fill level"
+      },
+      "level": {
+        "name": "Grain height"
+      },
+      "rings": {
+        "name": "Rings filled"
+      },
+      "volume": {
+        "name": "Grain volume"
+      },
+      "weight": {
+        "name": "Grain weight"
+      },
+      "remaining": {
+        "name": "Room left"
+      }
+    }
+  },
+  "selector": {
+    "measure": {
+      "options": {
+        "distance": "The distance down to the grain (sensor at the top)",
+        "level": "The height of the grain"
+      }
+    },
+    "unit": {
+      "options": {
+        "m": "Metres (m)",
+        "cm": "Centimetres (cm)",
+        "ft": "Feet (ft)",
+        "in": "Inches (in)"
+      }
+    },
+    "shape": {
+      "options": {
+        "round": "Round",
+        "square": "Square"
+      }
+    },
+    "top": {
+      "options": {
+        "cone": "Cone",
+        "dome": "Dome",
+        "flat": "Flat"
+      }
+    },
+    "bottom": {
+      "options": {
+        "flat": "Flat floor",
+        "cone": "Cone (hopper)"
+      }
+    },
+    "grain": {
+      "options": {
+        "none": "Not set",
+        "wheat": "Wheat",
+        "corn": "Corn",
+        "barley": "Barley",
+        "oats": "Oats",
+        "soybeans": "Soybeans",
+        "canola": "Canola",
+        "rye": "Rye",
+        "peas": "Peas",
+        "flax": "Flax",
+        "sorghum": "Sorghum"
+      }
+    },
+    "weight_unit": {
+      "options": {
+        "t": "Tonnes (t)",
+        "kg": "Kilograms (kg)",
+        "ton": "Short tons (2000 lb)",
+        "lb": "Pounds (lb)"
+      }
+    },
+    "volume_unit": {
+      "options": {
+        "m3": "Cubic metres (m³)",
+        "l": "Litres (L)",
+        "ft3": "Cubic feet (ft³)",
+        "bu": "Bushels (bu)"
+      }
+    },
+    "capacity_per": {
+      "options": {
+        "silo": "The whole silo, full",
+        "ring": "One full ring (the hopper and roof follow from their volume)"
+      }
+    }
+  }
+}

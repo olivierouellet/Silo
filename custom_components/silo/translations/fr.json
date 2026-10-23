@@ -1,0 +1,231 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Ajouter un silo",
+        "description": "Choisissez le capteur qui mesure le grain : habituellement un capteur à ultrasons en haut du silo, pointé vers le bas (voir l’exemple ESPHome de Silo Card). Les étapes suivantes décrivent la forme du silo et ce qu’il contient.",
+        "data": {
+          "name": "Nom",
+          "source": "Capteur",
+          "measure": "Le capteur mesure",
+          "unit": "Unité des dimensions"
+        },
+        "data_description": {
+          "name": "Laissez vide pour prendre le nom de l’appareil du capteur.",
+          "source": "Toutes les unités de longueur conviennent (mm, cm, m, po, pi).",
+          "unit": "Toutes les longueurs de l’étape suivante sont dans cette unité."
+        }
+      },
+      "shape": {
+        "title": "Forme du silo",
+        "description": "Longueurs en {unit}. Le point le plus bas du silo (le plancher, ou la pointe de la trémie) est la hauteur 0.",
+        "data": {
+          "shape": "Section horizontale",
+          "diameter": "Diamètre (le côté, pour un silo carré)",
+          "rings": "Sections",
+          "ring_height": "Hauteur d’une section",
+          "top": "Toit",
+          "top_height": "Hauteur du toit",
+          "bottom": "Fond",
+          "bottom_height": "Hauteur de la trémie",
+          "outlet": "Diamètre de la sortie de la trémie",
+          "sensor_height": "Hauteur du capteur"
+        },
+        "data_description": {
+          "rings": "La paroi droite, du bas du toit jusqu’à la trémie ou au plancher. Une paroi sans sections compte pour 1 section de toute sa hauteur.",
+          "top_height": "Ignorée pour un toit plat.",
+          "bottom_height": "Ignorée pour un plancher plat.",
+          "outlet": "0 si la trémie finit en pointe.",
+          "sensor_height": "Au-dessus du point le plus bas du silo. Laissez vide si le capteur est tout en haut."
+        }
+      },
+      "contents": {
+        "title": "Ce que contient le silo",
+        "description": "Pour le poids, choisissez un grain (le poids standard de son boisseau), ou entrez votre propre masse volumique ou la capacité du fabricant. Laissez-les tous vides pour n’avoir que le volume.",
+        "data": {
+          "grain": "Grain",
+          "density": "Masse volumique",
+          "density_unit": "Unité de masse volumique",
+          "capacity": "Capacité (poids quand il est plein)",
+          "capacity_per": "La capacité est celle",
+          "weight_unit": "Unité de poids",
+          "volume_unit": "Unité de volume",
+          "include_roof": "Plein veut dire rempli jusqu’au sommet"
+        },
+        "data_description": {
+          "density": "Remplace le poids standard du boisseau. Votre propre poids spécifique est plus juste.",
+          "capacity": "Poids du silo entier quand il est plein, ou d’une section pleine, dans l’unité de poids ci-dessous, selon le fabricant. Remplace la masse volumique.",
+          "include_roof": "Sinon, le silo est plein au bas du toit, et le grain dans le toit s’affiche au-delà de 100 %.",
+          "capacity_per": "Avec « D’une section pleine », la trémie et le toit prennent le poids de leur propre volume : un cône contient le tiers d’une section de même hauteur."
+        }
+      }
+    },
+    "error": {
+      "positive": "Entrez une longueur plus grande que 0.",
+      "roof_height": "Entrez la hauteur du toit, ou choisissez un toit plat.",
+      "hopper_height": "Entrez la hauteur de la trémie, ou choisissez un plancher plat."
+    },
+    "abort": {
+      "already_configured": "Ce capteur a déjà un silo."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options du silo",
+        "description": "Les capteurs gardent leurs identifiants. Changer d’unité convertit les longueurs déjà entrées.",
+        "data": {
+          "source": "Capteur",
+          "measure": "Le capteur mesure",
+          "unit": "Unité des dimensions"
+        },
+        "data_description": {
+          "source": "Toutes les unités de longueur conviennent (mm, cm, m, po, pi).",
+          "unit": "Toutes les longueurs de l’étape suivante sont dans cette unité."
+        }
+      },
+      "shape": {
+        "title": "Forme du silo",
+        "description": "Longueurs en {unit}. Le point le plus bas du silo (le plancher, ou la pointe de la trémie) est la hauteur 0.",
+        "data": {
+          "shape": "Section horizontale",
+          "diameter": "Diamètre (le côté, pour un silo carré)",
+          "rings": "Sections",
+          "ring_height": "Hauteur d’une section",
+          "top": "Toit",
+          "top_height": "Hauteur du toit",
+          "bottom": "Fond",
+          "bottom_height": "Hauteur de la trémie",
+          "outlet": "Diamètre de la sortie de la trémie",
+          "sensor_height": "Hauteur du capteur"
+        },
+        "data_description": {
+          "rings": "La paroi droite, du bas du toit jusqu’à la trémie ou au plancher. Une paroi sans sections compte pour 1 section de toute sa hauteur.",
+          "top_height": "Ignorée pour un toit plat.",
+          "bottom_height": "Ignorée pour un plancher plat.",
+          "outlet": "0 si la trémie finit en pointe.",
+          "sensor_height": "Au-dessus du point le plus bas du silo. Laissez vide si le capteur est tout en haut."
+        }
+      },
+      "contents": {
+        "title": "Ce que contient le silo",
+        "description": "Pour le poids, choisissez un grain (le poids standard de son boisseau), ou entrez votre propre masse volumique ou la capacité du fabricant. Laissez-les tous vides pour n’avoir que le volume.",
+        "data": {
+          "grain": "Grain",
+          "density": "Masse volumique",
+          "density_unit": "Unité de masse volumique",
+          "capacity": "Capacité (poids quand il est plein)",
+          "capacity_per": "La capacité est celle",
+          "weight_unit": "Unité de poids",
+          "volume_unit": "Unité de volume",
+          "include_roof": "Plein veut dire rempli jusqu’au sommet"
+        },
+        "data_description": {
+          "density": "Remplace le poids standard du boisseau. Votre propre poids spécifique est plus juste.",
+          "capacity": "Poids du silo entier quand il est plein, ou d’une section pleine, dans l’unité de poids ci-dessous, selon le fabricant. Remplace la masse volumique.",
+          "include_roof": "Sinon, le silo est plein au bas du toit, et le grain dans le toit s’affiche au-delà de 100 %.",
+          "capacity_per": "Avec « D’une section pleine », la trémie et le toit prennent le poids de leur propre volume : un cône contient le tiers d’une section de même hauteur."
+        }
+      }
+    },
+    "error": {
+      "positive": "Entrez une longueur plus grande que 0.",
+      "roof_height": "Entrez la hauteur du toit, ou choisissez un toit plat.",
+      "hopper_height": "Entrez la hauteur de la trémie, ou choisissez un plancher plat."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "fill": {
+        "name": "Taux de remplissage"
+      },
+      "level": {
+        "name": "Hauteur du grain"
+      },
+      "rings": {
+        "name": "Sections remplies"
+      },
+      "volume": {
+        "name": "Volume de grain"
+      },
+      "weight": {
+        "name": "Poids du grain"
+      },
+      "remaining": {
+        "name": "Place libre"
+      }
+    }
+  },
+  "selector": {
+    "measure": {
+      "options": {
+        "distance": "La distance jusqu’au grain (capteur en haut)",
+        "level": "La hauteur du grain"
+      }
+    },
+    "unit": {
+      "options": {
+        "m": "Mètres (m)",
+        "cm": "Centimètres (cm)",
+        "ft": "Pieds (pi)",
+        "in": "Pouces (po)"
+      }
+    },
+    "shape": {
+      "options": {
+        "round": "Ronde",
+        "square": "Carrée"
+      }
+    },
+    "top": {
+      "options": {
+        "cone": "Cône",
+        "dome": "Dôme",
+        "flat": "Plat"
+      }
+    },
+    "bottom": {
+      "options": {
+        "flat": "Plancher plat",
+        "cone": "Cône (trémie)"
+      }
+    },
+    "grain": {
+      "options": {
+        "none": "Non précisé",
+        "wheat": "Blé",
+        "corn": "Maïs",
+        "barley": "Orge",
+        "oats": "Avoine",
+        "soybeans": "Soya",
+        "canola": "Canola",
+        "rye": "Seigle",
+        "peas": "Pois",
+        "flax": "Lin",
+        "sorghum": "Sorgho"
+      }
+    },
+    "weight_unit": {
+      "options": {
+        "t": "Tonnes métriques (t)",
+        "kg": "Kilogrammes (kg)",
+        "ton": "Tonnes courtes (2000 lb)",
+        "lb": "Livres (lb)"
+      }
+    },
+    "volume_unit": {
+      "options": {
+        "m3": "Mètres cubes (m³)",
+        "l": "Litres (L)",
+        "ft3": "Pieds cubes (pi³)",
+        "bu": "Boisseaux (bo)"
+      }
+    },
+    "capacity_per": {
+      "options": {
+        "silo": "Du silo entier, plein",
+        "ring": "D’une section pleine (la trémie et le toit suivent selon leur volume)"
+      }
+    }
+  }
+}
