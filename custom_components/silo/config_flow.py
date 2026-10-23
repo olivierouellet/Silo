@@ -52,17 +52,19 @@ STORED_VOLUME = {v: k for k, v in FORM_VOLUME.items()}
 DENSITY_LABELS = {"kg/m3": "kg/m³", "kg/hL": "kg/hL", "lb/bu": "lb/bu", "lb/ft3": "lb/ft³"}
 
 # Number boxes step by what makes sense for the unit.
-LENGTH_STEP = {"m": 0.01, "cm": 1, "ft": 0.01, "in": 0.5}
+LENGTH_STEP = {"m": 0.01, "cm": 1, "mm": 1, "ft": 0.01, "in": 0.5}
 
 
 def _select(options: tuple[str, ...] | list[str], key: str, mode=SelectSelectorMode.DROPDOWN) -> SelectSelector:
     return SelectSelector(SelectSelectorConfig(options=list(options), mode=mode, translation_key=key))
 
 
-def _length(unit: str) -> NumberSelector:
-    return NumberSelector(
-        NumberSelectorConfig(min=0, step=LENGTH_STEP[unit], mode=NumberSelectorMode.BOX, unit_of_measurement=unit)
-    )
+def _length(values: dict[str, Any], key: str, required: bool = True) -> dict[Any, Any]:
+    """A length, then its unit: the default unit unless another is chosen."""
+    unit = values.get(f"{key}_unit") or values["unit"]
+    number = NumberSelector(NumberSelectorConfig(min=0, step=LENGTH_STEP[unit], mode=NumberSelectorMode.BOX))
+    field = vol.Required(key, default=values.get(key, vol.UNDEFINED)) if required else _optional(key, values)
+    return {field: number, vol.Required(f"{key}_unit", default=unit): _select(LENGTH_UNITS, "unit")}
 
 
 def _optional(key: str, values: dict[str, Any]) -> vol.Optional:
@@ -85,22 +87,22 @@ def _sensor_schema(values: dict[str, Any], with_name: bool) -> vol.Schema:
 
 
 def _shape_schema(values: dict[str, Any]) -> vol.Schema:
-    length = _length(values["unit"])
     fields: dict[Any, Any] = {
         vol.Required("shape", default=values["shape"]): _select(SHAPES, "shape"),
-        vol.Required("diameter", default=values.get("diameter", vol.UNDEFINED)): length,
+        **_length(values, "diameter"),
         vol.Required("rings", default=values["rings"]): NumberSelector(
             NumberSelectorConfig(min=1, max=30, step=1, mode=NumberSelectorMode.BOX)
         ),
-        vol.Required("ring_height", default=values.get("ring_height", vol.UNDEFINED)): length,
+        **_length(values, "ring_height"),
         vol.Required("top", default=values["top"]): _select(TOPS, "top"),
-        vol.Required("top_height", default=values["top_height"]): length,
+        **_length(values, "top_height"),
+        **_length(values, "top_opening"),
         vol.Required("bottom", default=values["bottom"]): _select(BOTTOMS, "bottom"),
-        vol.Required("bottom_height", default=values["bottom_height"]): length,
-        vol.Required("outlet", default=values["outlet"]): length,
+        **_length(values, "bottom_height"),
+        **_length(values, "outlet"),
     }
     if values["measure"] == "distance":
-        fields[_optional("sensor_height", values)] = length
+        fields.update(_length(values, "sensor_height", required=False))
     return vol.Schema(fields)
 
 
@@ -155,10 +157,16 @@ def _clean(values: dict[str, Any]) -> dict[str, Any]:
         options.pop("capacity_per", None)
     if options.get("top") == "flat":
         options["top_height"] = 0
+    if options.get("top") != "cone":
+        options["top_opening"] = 0
     if options.get("bottom") != "cone":
         options["bottom_height"] = options["outlet"] = 0
     if options.get("measure") != "distance":
         options.pop("sensor_height", None)
+    # A length's own unit is only kept when it differs from the default, and for a length that is kept.
+    for key in LENGTH_KEYS:
+        if options.get(f"{key}_unit") == options["unit"] or not options.get(key):
+            options.pop(f"{key}_unit", None)
     return options
 
 
@@ -176,13 +184,19 @@ class _SiloSteps:
         )
 
     def _set_sensor(self, user_input: dict[str, Any]) -> None:
-        """Keep the sensor step's answers; a new unit converts the lengths already entered."""
+        """Keep the sensor step's answers; a new default unit converts the lengths that follow it."""
         before = self._values["unit"]
         self._values.update(user_input)
-        if user_input["unit"] != before:
-            for key in LENGTH_KEYS:
-                if isinstance(self._values.get(key), int | float):
-                    self._values[key] = convert_length(self._values[key], before, user_input["unit"])
+        unit = user_input["unit"]
+        if unit == before:
+            return
+        for key in LENGTH_KEYS:
+            own = self._values.get(f"{key}_unit")
+            if own == unit:
+                # Its own unit is the new default: it follows it, with no conversion.
+                self._values.pop(f"{key}_unit")
+            elif own is None and isinstance(self._values.get(key), int | float):
+                self._values[key] = convert_length(self._values[key], before, unit)
 
     async def async_step_shape(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         errors: dict[str, str] = {}

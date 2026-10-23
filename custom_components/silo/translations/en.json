@@ -8,32 +8,41 @@
           "name": "Name",
           "source": "Sensor",
           "measure": "The sensor measures",
-          "unit": "Unit of the dimensions"
+          "unit": "Default unit"
         },
         "data_description": {
           "name": "Leave empty to use the sensor's device name.",
           "source": "Any length unit works (mm, cm, m, in, ft).",
-          "unit": "Every length in the next step is in this unit."
+          "unit": "Each length in the next step can have a unit of its own; this one is for the rest, and for the grain height sensor."
         }
       },
       "shape": {
         "title": "Shape of the silo",
-        "description": "Lengths in {unit}. The silo's lowest point (the floor, or the tip of the hopper) is height 0.",
+        "description": "The silo's lowest point (the floor, or the tip of the hopper) is height 0. Each length is followed by its unit, {unit} unless you choose another.",
         "data": {
           "shape": "Cross-section",
           "diameter": "Diameter (the side, for a square silo)",
+          "diameter_unit": "Diameter unit",
           "rings": "Rings",
           "ring_height": "Ring height",
+          "ring_height_unit": "Ring height unit",
           "top": "Roof",
           "top_height": "Roof height",
+          "top_height_unit": "Roof height unit",
+          "top_opening": "Roof opening diameter",
+          "top_opening_unit": "Roof opening unit",
           "bottom": "Bottom",
           "bottom_height": "Hopper height",
+          "bottom_height_unit": "Hopper height unit",
           "outlet": "Hopper outlet diameter",
-          "sensor_height": "Sensor height"
+          "outlet_unit": "Outlet diameter unit",
+          "sensor_height": "Sensor height",
+          "sensor_height_unit": "Sensor height unit"
         },
         "data_description": {
           "rings": "The straight wall, from the eave down to the hopper or floor. A wall without rings is 1 ring as tall as the wall.",
           "top_height": "Ignored for a flat roof.",
+          "top_opening": "The flat lid at the top of a cone roof. 0 when the roof comes to a point.",
           "bottom_height": "Ignored for a flat floor.",
           "outlet": "0 when the hopper comes to a point.",
           "sensor_height": "Above the silo's lowest point. Leave empty when the sensor is at the very top."
@@ -73,35 +82,44 @@
     "step": {
       "init": {
         "title": "Silo options",
-        "description": "The sensors keep their IDs. Changing the unit converts the lengths already entered.",
+        "description": "The sensors keep their IDs. Changing the default unit converts the lengths that follow it.",
         "data": {
           "source": "Sensor",
           "measure": "The sensor measures",
-          "unit": "Unit of the dimensions"
+          "unit": "Default unit"
         },
         "data_description": {
           "source": "Any length unit works (mm, cm, m, in, ft).",
-          "unit": "Every length in the next step is in this unit."
+          "unit": "Each length in the next step can have a unit of its own; this one is for the rest, and for the grain height sensor."
         }
       },
       "shape": {
         "title": "Shape of the silo",
-        "description": "Lengths in {unit}. The silo's lowest point (the floor, or the tip of the hopper) is height 0.",
+        "description": "The silo's lowest point (the floor, or the tip of the hopper) is height 0. Each length is followed by its unit, {unit} unless you choose another.",
         "data": {
           "shape": "Cross-section",
           "diameter": "Diameter (the side, for a square silo)",
+          "diameter_unit": "Diameter unit",
           "rings": "Rings",
           "ring_height": "Ring height",
+          "ring_height_unit": "Ring height unit",
           "top": "Roof",
           "top_height": "Roof height",
+          "top_height_unit": "Roof height unit",
+          "top_opening": "Roof opening diameter",
+          "top_opening_unit": "Roof opening unit",
           "bottom": "Bottom",
           "bottom_height": "Hopper height",
+          "bottom_height_unit": "Hopper height unit",
           "outlet": "Hopper outlet diameter",
-          "sensor_height": "Sensor height"
+          "outlet_unit": "Outlet diameter unit",
+          "sensor_height": "Sensor height",
+          "sensor_height_unit": "Sensor height unit"
         },
         "data_description": {
           "rings": "The straight wall, from the eave down to the hopper or floor. A wall without rings is 1 ring as tall as the wall.",
           "top_height": "Ignored for a flat roof.",
+          "top_opening": "The flat lid at the top of a cone roof. 0 when the roof comes to a point.",
           "bottom_height": "Ignored for a flat floor.",
           "outlet": "0 when the hopper comes to a point.",
           "sensor_height": "Above the silo's lowest point. Leave empty when the sensor is at the very top."
@@ -167,6 +185,7 @@
       "options": {
         "m": "Metres (m)",
         "cm": "Centimetres (cm)",
+        "mm": "Millimetres (mm)",
         "ft": "Feet (ft)",
         "in": "Inches (in)"
       }

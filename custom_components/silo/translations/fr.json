@@ -8,32 +8,41 @@
           "name": "Nom",
           "source": "Capteur",
           "measure": "Le capteur mesure",
-          "unit": "Unité des dimensions"
+          "unit": "Unité par défaut"
         },
         "data_description": {
           "name": "Laissez vide pour prendre le nom de l’appareil du capteur.",
           "source": "Toutes les unités de longueur conviennent (mm, cm, m, po, pi).",
-          "unit": "Toutes les longueurs de l’étape suivante sont dans cette unité."
+          "unit": "Chaque longueur de l’étape suivante peut avoir sa propre unité; celle-ci vaut pour les autres, et pour le capteur de hauteur du grain."
         }
       },
       "shape": {
         "title": "Forme du silo",
-        "description": "Longueurs en {unit}. Le point le plus bas du silo (le plancher, ou la pointe de la trémie) est la hauteur 0.",
+        "description": "Le point le plus bas du silo (le plancher, ou la pointe de la trémie) est la hauteur 0. Chaque longueur est suivie de son unité, {unit} à moins d’en choisir une autre.",
         "data": {
           "shape": "Section horizontale",
           "diameter": "Diamètre (le côté, pour un silo carré)",
+          "diameter_unit": "Unité du diamètre",
           "rings": "Sections",
           "ring_height": "Hauteur d’une section",
+          "ring_height_unit": "Unité de la hauteur d’une section",
           "top": "Toit",
           "top_height": "Hauteur du toit",
+          "top_height_unit": "Unité de la hauteur du toit",
+          "top_opening": "Diamètre de l’ouverture du toit",
+          "top_opening_unit": "Unité du diamètre de l’ouverture",
           "bottom": "Fond",
           "bottom_height": "Hauteur de la trémie",
+          "bottom_height_unit": "Unité de la hauteur de la trémie",
           "outlet": "Diamètre de la sortie de la trémie",
-          "sensor_height": "Hauteur du capteur"
+          "outlet_unit": "Unité du diamètre de la sortie",
+          "sensor_height": "Hauteur du capteur",
+          "sensor_height_unit": "Unité de la hauteur du capteur"
         },
         "data_description": {
           "rings": "La paroi droite, du bas du toit jusqu’à la trémie ou au plancher. Une paroi sans sections compte pour 1 section de toute sa hauteur.",
           "top_height": "Ignorée pour un toit plat.",
+          "top_opening": "Le couvercle plat en haut d’un toit en cône. 0 si le toit finit en pointe.",
           "bottom_height": "Ignorée pour un plancher plat.",
           "outlet": "0 si la trémie finit en pointe.",
           "sensor_height": "Au-dessus du point le plus bas du silo. Laissez vide si le capteur est tout en haut."
@@ -73,35 +82,44 @@
     "step": {
       "init": {
         "title": "Options du silo",
-        "description": "Les capteurs gardent leurs identifiants. Changer d’unité convertit les longueurs déjà entrées.",
+        "description": "Les capteurs gardent leurs identifiants. Changer l’unité par défaut convertit les longueurs qui la suivent.",
         "data": {
           "source": "Capteur",
           "measure": "Le capteur mesure",
-          "unit": "Unité des dimensions"
+          "unit": "Unité par défaut"
         },
         "data_description": {
           "source": "Toutes les unités de longueur conviennent (mm, cm, m, po, pi).",
-          "unit": "Toutes les longueurs de l’étape suivante sont dans cette unité."
+          "unit": "Chaque longueur de l’étape suivante peut avoir sa propre unité; celle-ci vaut pour les autres, et pour le capteur de hauteur du grain."
         }
       },
       "shape": {
         "title": "Forme du silo",
-        "description": "Longueurs en {unit}. Le point le plus bas du silo (le plancher, ou la pointe de la trémie) est la hauteur 0.",
+        "description": "Le point le plus bas du silo (le plancher, ou la pointe de la trémie) est la hauteur 0. Chaque longueur est suivie de son unité, {unit} à moins d’en choisir une autre.",
         "data": {
           "shape": "Section horizontale",
           "diameter": "Diamètre (le côté, pour un silo carré)",
+          "diameter_unit": "Unité du diamètre",
           "rings": "Sections",
           "ring_height": "Hauteur d’une section",
+          "ring_height_unit": "Unité de la hauteur d’une section",
           "top": "Toit",
           "top_height": "Hauteur du toit",
+          "top_height_unit": "Unité de la hauteur du toit",
+          "top_opening": "Diamètre de l’ouverture du toit",
+          "top_opening_unit": "Unité du diamètre de l’ouverture",
           "bottom": "Fond",
           "bottom_height": "Hauteur de la trémie",
+          "bottom_height_unit": "Unité de la hauteur de la trémie",
           "outlet": "Diamètre de la sortie de la trémie",
-          "sensor_height": "Hauteur du capteur"
+          "outlet_unit": "Unité du diamètre de la sortie",
+          "sensor_height": "Hauteur du capteur",
+          "sensor_height_unit": "Unité de la hauteur du capteur"
         },
         "data_description": {
           "rings": "La paroi droite, du bas du toit jusqu’à la trémie ou au plancher. Une paroi sans sections compte pour 1 section de toute sa hauteur.",
           "top_height": "Ignorée pour un toit plat.",
+          "top_opening": "Le couvercle plat en haut d’un toit en cône. 0 si le toit finit en pointe.",
           "bottom_height": "Ignorée pour un plancher plat.",
           "outlet": "0 si la trémie finit en pointe.",
           "sensor_height": "Au-dessus du point le plus bas du silo. Laissez vide si le capteur est tout en haut."
@@ -167,6 +185,7 @@
       "options": {
         "m": "Mètres (m)",
         "cm": "Centimètres (cm)",
+        "mm": "Millimètres (mm)",
         "ft": "Pieds (pi)",
         "in": "Pouces (po)"
       }

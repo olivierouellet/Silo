@@ -19,7 +19,7 @@ FOOT = 0.3048  # m
 # US (Winchester) bushel, 2150.42 cubic inches, the one grain is sold by in North America.
 BUSHEL = 0.03523907016688  # m³
 
-METRES = {"m": 1.0, "cm": 0.01, "ft": FOOT, "in": 0.0254}
+METRES = {"m": 1.0, "cm": 0.01, "mm": 0.001, "ft": FOOT, "in": 0.0254}
 CUBIC_METRES = {"m3": 1.0, "L": 0.001, "ft3": FOOT**3, "bu": BUSHEL}
 # `ton` is the short ton (2000 lb); `t` the metric tonne.
 KILOGRAMS = {"t": 1000.0, "kg": 1.0, "ton": 2000 * POUND, "lb": POUND}
@@ -57,7 +57,7 @@ def sensor_metres(state: str, unit: Any, fallback: str) -> float | None:
 
 def convert_length(value: float, from_unit: str, to_unit: str) -> float:
     """A length in another unit, rounded to what makes sense for that unit."""
-    decimals = {"m": 3, "cm": 1, "ft": 2, "in": 1}[to_unit]
+    decimals = {"m": 3, "cm": 1, "mm": 0, "ft": 2, "in": 1}[to_unit]
     return round(value * METRES[from_unit] / METRES[to_unit], decimals)
 
 
@@ -84,6 +84,7 @@ def build_parts(
     ring_height: float,
     top: str,
     top_height: float,
+    top_opening: float = 0.0,
     bottom: str,
     bottom_height: float,
     outlet: float,
@@ -99,7 +100,9 @@ def build_parts(
         parts.append(Part("ring", i, "frustum", z, z + ring_height, diameter, diameter))
         z += ring_height
     if top != "flat" and top_height > 0:
-        parts.append(Part("top", 0, "dome" if top == "dome" else "frustum", z, z + top_height, diameter, 0.0))
+        # A cone roof may end in a flat lid; a dome has none.
+        lid = min(max(top_opening, 0.0), diameter) if top == "cone" else 0.0
+        parts.append(Part("top", 0, "dome" if top == "dome" else "frustum", z, z + top_height, diameter, lid))
     return parts
 
 
@@ -172,11 +175,13 @@ class Reading:
 
 def silo_from_options(options: dict[str, Any]) -> Silo | None:
     """The silo the options describe, or None while a dimension it needs is missing."""
-    m = METRES.get(options.get("unit", "m"), 1.0)
+    default_unit = options.get("unit", "m")
 
     def length(key: str) -> float:
+        """A length in metres: in its own unit (`<key>_unit`), or in the silo's default unit."""
         value = options.get(key)
-        return float(value) * m if isinstance(value, int | float) and value > 0 else 0.0
+        unit = options.get(f"{key}_unit") or default_unit
+        return float(value) * METRES.get(unit, 1.0) if isinstance(value, int | float) and value > 0 else 0.0
 
     diameter, ring_height = length("diameter"), length("ring_height")
     if not diameter or not ring_height:
@@ -190,6 +195,7 @@ def silo_from_options(options: dict[str, Any]) -> Silo | None:
         ring_height=ring_height,
         top=options.get("top", "cone"),
         top_height=length("top_height"),
+        top_opening=length("top_opening"),
         bottom=bottom,
         bottom_height=length("bottom_height"),
         outlet=length("outlet"),

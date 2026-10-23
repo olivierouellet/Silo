@@ -22,7 +22,13 @@ from . import SiloConfigEntry, SiloData
 from .const import CONF_SOURCE, CONTENTS_KEYS, DOMAIN, SHAPE_KEYS
 from .geometry import CUBIC_METRES, KILOGRAMS, METRES, Reading
 
-LENGTHS = {"m": UnitOfLength.METERS, "cm": UnitOfLength.CENTIMETERS, "ft": UnitOfLength.FEET, "in": UnitOfLength.INCHES}
+LENGTHS = {
+    "m": UnitOfLength.METERS,
+    "cm": UnitOfLength.CENTIMETERS,
+    "mm": UnitOfLength.MILLIMETERS,
+    "ft": UnitOfLength.FEET,
+    "in": UnitOfLength.INCHES,
+}
 VOLUMES = {"m3": UnitOfVolume.CUBIC_METERS, "L": UnitOfVolume.LITERS, "ft3": UnitOfVolume.CUBIC_FEET}
 # Home Assistant has no tonnes or short tons: those weights go without a device class.
 MASSES = {"kg": UnitOfMass.KILOGRAMS, "lb": UnitOfMass.POUNDS}

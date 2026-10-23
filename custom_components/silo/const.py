@@ -5,6 +5,10 @@ DOMAIN = "silo"
 CONF_SOURCE = "source"
 
 # The silo's options use Silo Card's option names, so the card can read them straight from the fill sensor.
+LENGTH_KEYS = ("diameter", "ring_height", "top_height", "top_opening", "bottom_height", "outlet", "sensor_height")
+# Each length may have a unit of its own; without one, it is in the default unit (`unit`).
+UNIT_KEYS = tuple(f"{key}_unit" for key in LENGTH_KEYS)
+
 SHAPE_KEYS = (
     "shape",
     "diameter",
@@ -12,10 +16,12 @@ SHAPE_KEYS = (
     "ring_height",
     "top",
     "top_height",
+    "top_opening",
     "bottom",
     "bottom_height",
     "outlet",
     "sensor_height",
+    *UNIT_KEYS,
 )
 CONTENTS_KEYS = (
     "grain",
@@ -27,10 +33,8 @@ CONTENTS_KEYS = (
     "volume_unit",
     "include_roof",
 )
-LENGTH_KEYS = ("diameter", "ring_height", "top_height", "bottom_height", "outlet", "sensor_height")
-
 MEASURES = ("distance", "level")
-LENGTH_UNITS = ("m", "cm", "ft", "in")
+LENGTH_UNITS = ("m", "cm", "mm", "ft", "in")
 SHAPES = ("round", "square")
 TOPS = ("cone", "dome", "flat")
 BOTTOMS = ("flat", "cone")
@@ -46,6 +50,7 @@ DEFAULTS = {
     "rings": 1,
     "top": "cone",
     "top_height": 0,
+    "top_opening": 0,
     "bottom": "flat",
     "bottom_height": 0,
     "outlet": 0,
