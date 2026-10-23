@@ -31,11 +31,11 @@ Any sensor that measures the distance down to the grain (or the grain's height) 
 
 *Settings → Devices & services → Add integration → Silo*. Three steps:
 
-1. **The sensor**: the sensor, what it measures, and the unit of the dimensions (m, cm, ft or in).
-2. **The shape**: round or square; the diameter; the number of rings and their height; the roof (cone, dome or flat) and the bottom (flat floor or cone hopper, with its outlet). The silo's lowest point is height 0; by default the sensor is at the very top.
+1. **The sensor**: the sensor, what it measures, and the default unit of the dimensions (m, cm, mm, ft or in).
+2. **The shape**: round or square; the diameter; the number of rings and their height; the roof (cone, with its lid at the top, dome or flat) and the bottom (flat floor or cone hopper, with its outlet). Each length has its unit beside it, the default one unless you choose another: enter the silo as the manufacturer gives it, say 9 ft wide with 32 in rings. The silo's lowest point is height 0; by default the sensor is at the very top.
 3. **The contents**: a grain (its standard bushel weight), your own density, or the manufacturer's capacity, for the weight. The capacity can be the whole silo's or one full ring's (“3 tons a ring”): the hopper and roof then get the weight of their own volume, a cone holding a third of a ring as tall. Units for the weight (t, kg, short tons, lb) and the volume (m³, L, ft³, bushels). Whether full means filled to the eave (the default) or to the peak.
 
-Add one entry per silo; they are listed under **Silo** on the Integrations tab. *Configure* changes any of it later; the sensors keep their IDs, and a new unit converts the lengths already entered.
+Add one entry per silo; they are listed under **Silo** on the Integrations tab. *Configure* changes any of it later; the sensors keep their IDs, and a new default unit converts the lengths that follow it.
 
 ### Sensors
 
@@ -106,11 +106,11 @@ Tout capteur qui mesure la distance jusqu’au grain (ou la hauteur du grain) co
 
 *Paramètres → Appareils et services → Ajouter une intégration → Silo*. Trois étapes :
 
-1. **Le capteur** : le capteur, ce qu’il mesure, et l’unité des dimensions (m, cm, pi ou po).
-2. **La forme** : ronde ou carrée; le diamètre; le nombre de sections et leur hauteur; le toit (cône, dôme ou plat) et le fond (plancher plat ou trémie en cône, avec sa sortie). Le point le plus bas du silo est la hauteur 0; par défaut, le capteur est tout en haut.
+1. **Le capteur** : le capteur, ce qu’il mesure, et l’unité par défaut des dimensions (m, cm, mm, pi ou po).
+2. **La forme** : ronde ou carrée; le diamètre; le nombre de sections et leur hauteur; le toit (cône, avec son couvercle en haut, dôme ou plat) et le fond (plancher plat ou trémie en cône, avec sa sortie). Chaque longueur a son unité à côté, celle par défaut à moins d’en choisir une autre : entrez le silo comme le fabricant le donne, par exemple 9 pi de large avec des sections de 32 po. Le point le plus bas du silo est la hauteur 0; par défaut, le capteur est tout en haut.
 3. **Le contenu** : un grain (le poids standard de son boisseau), votre propre masse volumique, ou la capacité du fabricant, pour le poids. La capacité peut être celle du silo entier ou d’une section pleine (« 3 tonnes par section ») : la trémie et le toit prennent alors le poids de leur propre volume, un cône contenant le tiers d’une section de même hauteur. Les unités de poids (t, kg, tonnes courtes, lb) et de volume (m³, L, pi³, boisseaux). Si plein veut dire rempli jusqu’au bas du toit (par défaut) ou jusqu’au sommet.
 
-Ajoutez une entrée par silo; elles sont regroupées sous **Silo** dans l’onglet Intégrations. *Configurer* permet de tout changer plus tard; les capteurs gardent leurs identifiants, et une nouvelle unité convertit les longueurs déjà entrées.
+Ajoutez une entrée par silo; elles sont regroupées sous **Silo** dans l’onglet Intégrations. *Configurer* permet de tout changer plus tard; les capteurs gardent leurs identifiants, et une nouvelle unité par défaut convertit les longueurs qui la suivent.
 
 ### Capteurs
 
